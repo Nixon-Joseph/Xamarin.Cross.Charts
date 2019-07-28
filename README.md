@@ -8,35 +8,25 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### TODO: Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+If you are using the `.Forms` variant, you will need at least `Xamarin.Forms v3.3.0.912540`
+Both the `.Forms` and the native variants depend on `SkiaSharp v1.68.0`
 
 ### TODO: Installing
 
-A step by step series of examples that tell you how to get a development env running
+Available on NuGet
 
-Say what the step will be
+**NET Standard 2.0, Xamarin.iOS, Xamarin.Android, UWP**
 
-```
-Give the example
-```
+[![NuGet](https://img.shields.io/nuget/v/Xamarin.Cross.Charts.svg?label=NuGet)](https://www.nuget.org/packages/Xamarin.Cross.Charts/)
 
-And repeat
+**Xamarin.Forms (.NET Standard 2.0)**
 
-```
-until finished
-```
+[![NuGet](https://img.shields.io/nuget/v/Xamarin.Cross.Charts.Forms.svg?label=NuGet)](https://www.nuget.org/packages/Xamarin.Cross.Charts.Forms/)
 
-End with an example of getting some data out of the system or using it for a little demo
+## Built With
 
-## TODO: Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Xamarin](https://docs.microsoft.com/en-us/xamarin/) - The mobile framework
+* [SkiaSharp](https://github.com/mono/SkiaSharp) - Dependancy
 
 ## Contributing
 
@@ -46,17 +36,17 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/tags). 
 
-## TODO: Authors
+## Authors
 
-* **Joseph Nixon** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Joseph Nixon** - *Initial work* - [Microcharts](https://github.com/dotnet-ad/Microcharts/)
 
-TODO: See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+TODO: See also the list of [contributors](https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/contributors) who participated in this project.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## TODO: Acknowledgments
+## Acknowledgments
 
 * This project is 'forked' directly off of [Microcharts](https://github.com/dotnet-ad/Microcharts/).
 
