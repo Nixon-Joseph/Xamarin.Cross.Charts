@@ -1,4 +1,4 @@
-﻿namespace Xamarin.Cross.Charts.Charts
+﻿namespace Xamarin.Cross.Charts.Enums
 {
     public enum Orientation
     {

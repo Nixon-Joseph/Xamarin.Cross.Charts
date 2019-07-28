@@ -33,13 +33,13 @@ namespace Xamarin.Cross.Charts.Charts
 
         public override void DrawContent(SKCanvas canvas, int width, int height)
         {
-            if (Entries != null)
+            if (Inputs != null)
             {
-                var labels = Entries.Select(x => x.Label).ToArray();
+                var labels = Inputs.Select(x => x.Label).ToArray();
                 var labelSizes = MeasureLabels(labels);
                 var footerHeight = CalculateFooterHeaderHeight(labelSizes, LabelOrientation, labels);
 
-                var valueLabels = Entries.Select(x => x.ValueLabel).ToArray();
+                var valueLabels = Inputs.Select(x => x.DisplayValue).ToArray();
                 var valueLabelSizes = MeasureLabels(valueLabels);
                 var headerHeight = CalculateFooterHeaderHeight(valueLabelSizes, ValueLabelOrientation, valueLabels);
 
@@ -71,7 +71,7 @@ namespace Xamarin.Cross.Charts.Charts
 
         protected SKSize CalculateItemSize(int width, int height, float footerHeight, float headerHeight)
         {
-            var total = Entries.Count();
+            var total = Inputs.Count();
             var w = (width - ((total + 1) * Margin)) / total;
             var h = height - Margin - footerHeight - headerHeight;
             return new SKSize(w, h);
@@ -81,10 +81,10 @@ namespace Xamarin.Cross.Charts.Charts
         {
             var result = new List<SKPoint>();
 
-            for (int i = 0; i < Entries.Count(); i++)
+            for (int i = 0; i < Inputs.Count(); i++)
             {
-                var entry = Entries.ElementAt(i);
-                var value = entry.Value;
+                var input = Inputs.ElementAt(i);
+                var value = input.Value;
 
                 var x = Margin + (itemSize.Width / 2) + (i * (itemSize.Width + Margin));
                 var y = headerHeight + ((1 - AnimationProgress) * (origin - headerHeight) + (((MaxValue - value) / ValueRange) * itemSize.Height) * AnimationProgress);
@@ -101,7 +101,7 @@ namespace Xamarin.Cross.Charts.Charts
                             labels,
                             points.Select(p => new SKPoint(p.X, headerHeight - Margin)).ToArray(),
                             labelSizes,
-                            Entries.Select(x => x.Color.WithAlpha((byte)(255 * AnimationProgress))).ToArray(),
+                            Inputs.Select(x => x.Color.WithAlpha((byte)(255 * AnimationProgress))).ToArray(),
                             ValueLabelOrientation,
                             true,
                             itemSize,
@@ -114,7 +114,7 @@ namespace Xamarin.Cross.Charts.Charts
                             labels,
                             points.Select(p => new SKPoint(p.X, height - footerHeight + Margin)).ToArray(),
                             labelSizes,
-                            Entries.Select(x => LabelColor).ToArray(),
+                            Inputs.Select(x => LabelColor).ToArray(),
                             LabelOrientation,
                             false,
                             itemSize,
@@ -127,9 +127,9 @@ namespace Xamarin.Cross.Charts.Charts
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    var entry = Entries.ElementAt(i);
+                    var input = Inputs.ElementAt(i);
                     var point = points[i];
-                    canvas.DrawPoint(point, entry.Color, PointSize, PointMode);
+                    canvas.DrawPoint(point, input.Color, PointSize, PointMode);
                 }
             }
         }
@@ -140,15 +140,15 @@ namespace Xamarin.Cross.Charts.Charts
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    var entry = Entries.ElementAt(i);
+                    var input = Inputs.ElementAt(i);
                     var point = points[i];
                     var y = Math.Min(origin, point.Y);
 
-                    using (var shader = SKShader.CreateLinearGradient(new SKPoint(0, origin), new SKPoint(0, point.Y), new[] { entry.Color.WithAlpha(PointAreaAlpha), entry.Color.WithAlpha((byte)(PointAreaAlpha / 3)) }, null, SKShaderTileMode.Clamp))
+                    using (var shader = SKShader.CreateLinearGradient(new SKPoint(0, origin), new SKPoint(0, point.Y), new[] { input.Color.WithAlpha(PointAreaAlpha), input.Color.WithAlpha((byte)(PointAreaAlpha / 3)) }, null, SKShaderTileMode.Clamp))
                     using (var paint = new SKPaint
                     {
                         Style = SKPaintStyle.Fill,
-                        Color = entry.Color.WithAlpha(PointAreaAlpha),
+                        Color = input.Color.WithAlpha(PointAreaAlpha),
                     })
                     {
                         paint.Shader = shader;
@@ -173,7 +173,7 @@ namespace Xamarin.Cross.Charts.Charts
 
                 for (int i = 0; i < points.Length; i++)
                 {
-                    var entry = Entries.ElementAt(i);
+                    var input = Inputs.ElementAt(i);
                     var point = points[i];
 
                     if (!string.IsNullOrEmpty(texts[i]))

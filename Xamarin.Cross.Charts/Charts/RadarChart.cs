@@ -14,24 +14,24 @@ namespace Xamarin.Cross.Charts.Charts
         public PointMode PointMode { get; set; } = PointMode.Circle;
         public float PointSize { get; set; } = 14;
 
-        private float AbsoluteMinimum => Entries.Select(x => x.Value).Concat(new[] { MaxValue, MinValue, InternalMinValue ?? 0 }).Min(x => Math.Abs(x));
+        private float AbsoluteMinimum => Inputs.Select(x => x.Value).Concat(new[] { MaxValue, MinValue, InternalMinValue ?? 0 }).Min(x => Math.Abs(x));
 
-        private float AbsoluteMaximum => Entries.Select(x => x.Value).Concat(new[] { MaxValue, MinValue, InternalMinValue ?? 0 }).Max(x => Math.Abs(x));
+        private float AbsoluteMaximum => Inputs.Select(x => x.Value).Concat(new[] { MaxValue, MinValue, InternalMinValue ?? 0 }).Max(x => Math.Abs(x));
 
         private float ValueRange => AbsoluteMaximum - AbsoluteMinimum;
 
         public override void DrawContent(SKCanvas canvas, int width, int height)
         {
-            var total = Entries?.Count() ?? 0;
+            var total = Inputs?.Count() ?? 0;
 
             if (total > 0)
             {
-                var captionHeight = Entries.Max(x =>
+                var captionHeight = Inputs.Max(x =>
                 {
                     var result = 0.0f;
 
                     var hasLabel = !string.IsNullOrEmpty(x.Label);
-                    var hasValueLabel = !string.IsNullOrEmpty(x.ValueLabel);
+                    var hasValueLabel = !string.IsNullOrEmpty(x.DisplayValue);
                     if (hasLabel || hasValueLabel)
                     {
                         var hasOffset = hasLabel && hasValueLabel;
@@ -57,9 +57,9 @@ namespace Xamarin.Cross.Charts.Charts
                 var rangeAngle = (float)((Math.PI * 2) / total);
                 var startAngle = (float)Math.PI;
 
-                var nextEntry = Entries.First();
+                var nextInput = Inputs.First();
                 var nextAngle = startAngle;
-                var nextPoint = GetPoint(nextEntry.Value * AnimationProgress, center, nextAngle, radius);
+                var nextPoint = GetPoint(nextInput.Value * AnimationProgress, center, nextAngle, radius);
 
                 DrawBorder(canvas, center, radius);
 
@@ -70,13 +70,13 @@ namespace Xamarin.Cross.Charts.Charts
                     for (int i = 0; i < total; i++)
                     {
                         var angle = nextAngle;
-                        var entry = nextEntry;
+                        var input = nextInput;
                         var point = nextPoint;
 
                         var nextIndex = (i + 1) % total;
                         nextAngle = startAngle + (rangeAngle * nextIndex);
-                        nextEntry = Entries.ElementAt(nextIndex);
-                        nextPoint = GetPoint(nextEntry.Value * AnimationProgress, center, nextAngle, radius);
+                        nextInput = Inputs.ElementAt(nextIndex);
+                        nextPoint = GetPoint(nextInput.Value * AnimationProgress, center, nextAngle, radius);
 
                         canvas.Save();
                         canvas.ClipPath(clip);
@@ -99,18 +99,18 @@ namespace Xamarin.Cross.Charts.Charts
                         {
                             Style = SKPaintStyle.Stroke,
                             StrokeWidth = BorderLineSize,
-                            Color = entry.Color.WithAlpha((byte)(entry.Color.Alpha * 0.75f * AnimationProgress)),
+                            Color = input.Color.WithAlpha((byte)(input.Color.Alpha * 0.75f * AnimationProgress)),
                             PathEffect = SKPathEffect.CreateDash(new[] { BorderLineSize, BorderLineSize * 2 }, 0),
                             IsAntialias = true,
                         })
                         {
-                            var amount = Math.Abs(entry.Value - AbsoluteMinimum) / ValueRange;
+                            var amount = Math.Abs(input.Value - AbsoluteMinimum) / ValueRange;
                             canvas.DrawCircle(center.X, center.Y, radius * amount, paint);
                         }
 
-                        canvas.DrawGradientLine(center, entry.Color.WithAlpha(0), point, entry.Color.WithAlpha((byte)(entry.Color.Alpha * 0.75f)), LineSize);
-                        canvas.DrawGradientLine(point, entry.Color, nextPoint, nextEntry.Color, LineSize);
-                        canvas.DrawPoint(point, entry.Color, PointSize, PointMode);
+                        canvas.DrawGradientLine(center, input.Color.WithAlpha(0), point, input.Color.WithAlpha((byte)(input.Color.Alpha * 0.75f)), LineSize);
+                        canvas.DrawGradientLine(point, input.Color, nextPoint, nextInput.Color, LineSize);
+                        canvas.DrawPoint(point, input.Color, PointSize, PointMode);
 
                         canvas.Restore();
 
@@ -129,7 +129,7 @@ namespace Xamarin.Cross.Charts.Charts
                             alignment = SKTextAlign.Right;
                         }
 
-                        canvas.DrawCaptionLabels(entry.Label, entry.TextColor, entry.ValueLabel, entry.Color.WithAlpha((byte)(255 * AnimationProgress)), LabelTextSize, labelPoint, alignment, base.Typeface);
+                        canvas.DrawCaptionLabels(input.Label, input.TextColor, input.DisplayValue, input.Color.WithAlpha((byte)(255 * AnimationProgress)), LabelTextSize, labelPoint, alignment, base.Typeface);
                     }
                 }
             }

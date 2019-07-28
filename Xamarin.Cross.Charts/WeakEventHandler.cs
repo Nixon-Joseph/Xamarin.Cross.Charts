@@ -2,21 +2,21 @@
 
 namespace Xamarin.Cross.Charts
 {
-    public class InvalidatedWeakEventHandler<TTarget> : IDisposable where TTarget : class
+    public class WeakEventHandler<TTarget> : IDisposable where TTarget : class
     {
         private readonly WeakReference<Chart> SourceReference;
         private readonly WeakReference<TTarget> TargetReference;
         private readonly Action<TTarget> TargetMethod;
         private bool isSubscribed;
 
-        public InvalidatedWeakEventHandler(Chart source, TTarget target, Action<TTarget> targetMethod)
+        public WeakEventHandler(Chart source, TTarget target, Action<TTarget> targetMethod)
         {
             SourceReference = new WeakReference<Chart>(source);
             TargetReference = new WeakReference<TTarget>(target);
             TargetMethod = targetMethod;
         }
         public bool IsAlive => SourceReference.TryGetTarget(out Chart s) && TargetReference.TryGetTarget(out TTarget t);
-        public void Subsribe()
+        public void Subscribe()
         {
             if (!isSubscribed && SourceReference.TryGetTarget(out Chart source))
             {

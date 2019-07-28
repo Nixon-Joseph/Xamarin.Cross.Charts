@@ -10,13 +10,13 @@ namespace Xamarin.Cross.Charts.Charts
         public byte BarAreaAlpha { get; set; } = 32;
         public override void DrawContent(SKCanvas canvas, int width, int height)
         {
-            if (Entries != null)
+            if (Inputs != null)
             {
-                var labels = Entries.Select(x => x.Label).ToArray();
+                var labels = Inputs.Select(x => x.Label).ToArray();
                 var labelSizes = MeasureLabels(labels);
                 var footerHeight = CalculateFooterHeaderHeight(labelSizes, LabelOrientation, labels);
 
-                var valueLabels = Entries.Select(x => x.ValueLabel).ToArray();
+                var valueLabels = Inputs.Select(x => x.DisplayValue).ToArray();
                 var valueLabelSizes = MeasureLabels(valueLabels);
                 var headerHeight = CalculateFooterHeaderHeight(valueLabelSizes, ValueLabelOrientation, valueLabels);
 
@@ -36,15 +36,15 @@ namespace Xamarin.Cross.Charts.Charts
             const float MinBarHeight = 4;
             if (points.Length > 0)
             {
-                for (int i = 0; i < Entries.Count(); i++)
+                for (int i = 0; i < Inputs.Count(); i++)
                 {
-                    var entry = Entries.ElementAt(i);
+                    var input = Inputs.ElementAt(i);
                     var point = points[i];
 
                     using (var paint = new SKPaint
                     {
                         Style = SKPaintStyle.Fill,
-                        Color = entry.Color,
+                        Color = input.Color,
                     })
                     {
                         var x = point.X - (itemSize.Width / 2);
@@ -71,16 +71,16 @@ namespace Xamarin.Cross.Charts.Charts
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    var entry = Entries.ElementAt(i);
+                    var input = Inputs.ElementAt(i);
                     var point = points[i];
 
                     using (var paint = new SKPaint
                     {
                         Style = SKPaintStyle.Fill,
-                        Color = entry.Color.WithAlpha((byte)(BarAreaAlpha * AnimationProgress)),
+                        Color = input.Color.WithAlpha((byte)(BarAreaAlpha * AnimationProgress)),
                     })
                     {
-                        var max = entry.Value > 0 ? headerHeight : headerHeight + itemSize.Height;
+                        var max = input.Value > 0 ? headerHeight : headerHeight + itemSize.Height;
                         var height = Math.Abs(max - point.Y);
                         var y = Math.Min(max, point.Y);
                         canvas.DrawRect(SKRect.Create(point.X - (itemSize.Width / 2), y, itemSize.Width, height), paint);

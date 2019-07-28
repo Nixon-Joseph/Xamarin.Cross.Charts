@@ -13,9 +13,8 @@ namespace Xamarin.Cross.Charts.Forms
             set { SetValue(ChartProperty, value); }
         }
 
-
-        private InvalidatedWeakEventHandler<ChartView> handler;
-        private Chart chart;
+        private WeakEventHandler<ChartView> _Handler;
+        private Chart _Chart;
 
         public ChartView()
         {
@@ -25,28 +24,29 @@ namespace Xamarin.Cross.Charts.Forms
 
         private static void OnChartChanged(BindableObject d, object oldValue, object value)
         {
-            var view = d as ChartView;
-
-            if (view.chart != null)
+            if (d is ChartView _this && value is Chart newChart)
             {
-                view.handler.Dispose();
-                view.handler = null;
-            }
+                if (_this._Chart != null)
+                {
+                    _this._Handler.Dispose();
+                    _this._Handler = null;
+                }
 
-            view.chart = value as Chart;
-            view.InvalidateSurface();
+                _this._Chart = newChart;
+                _this.InvalidateSurface();
 
-            if (view.chart != null)
-            {
-                view.handler = view.chart.ObserveInvalidate(view, (v) => v.InvalidateSurface());
+                if (_this._Chart != null)
+                {
+                    _this._Handler = _this._Chart.ObserveInvalidate(_this, (v) => v.InvalidateSurface());
+                }
             }
         }
 
         private void OnPaintCanvas(object sender, SKPaintSurfaceEventArgs e)
         {
-            if (chart != null)
+            if (_Chart != null)
             {
-                chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
+                _Chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
             }
             else
             {

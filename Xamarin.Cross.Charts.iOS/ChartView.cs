@@ -9,15 +9,10 @@ namespace Xamarin.Cross.Charts.iOS
     [Register("ChartView")]
     public class ChartView : SKCanvasView
     {
-        public ChartView()
-        {
-            Initialize();
-        }
+        public ChartView() { Initialize(); }
 
         [Preserve]
-        public ChartView(IntPtr handle) : base(handle)
-        {
-        }
+        public ChartView(IntPtr handle) : base(handle) { Initialize(); }
 
         public override void AwakeFromNib()
         {
@@ -31,29 +26,29 @@ namespace Xamarin.Cross.Charts.iOS
             PaintSurface += OnPaintCanvas;
         }
 
-        private InvalidatedWeakEventHandler<ChartView> handler;
+        private WeakEventHandler<ChartView> _Handler;
 
-        private Chart chart;
+        private Chart _Chart;
 
         public Chart Chart
         {
-            get => chart;
+            get => _Chart;
             set
             {
-                if (chart != value)
+                if (_Chart != value)
                 {
-                    if (chart != null)
+                    if (_Chart != null)
                     {
-                        handler.Dispose();
-                        handler = null;
+                        _Handler.Dispose();
+                        _Handler = null;
                     }
 
-                    chart = value;
+                    _Chart = value;
                     InvalidateChart();
 
-                    if (chart != null)
+                    if (_Chart != null)
                     {
-                        handler = chart.ObserveInvalidate(this, (view) => view.InvalidateChart());
+                        _Handler = _Chart.ObserveInvalidate(this, (view) => view.InvalidateChart());
                     }
                 }
             }
@@ -62,9 +57,9 @@ namespace Xamarin.Cross.Charts.iOS
 
         private void OnPaintCanvas(object sender, SKPaintSurfaceEventArgs e)
         {
-            if (chart != null)
+            if (_Chart != null)
             {
-                chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
+                _Chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
             }
             else
             {

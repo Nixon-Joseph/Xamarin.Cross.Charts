@@ -12,27 +12,27 @@ namespace Xamarin.Cross.Charts.Charts
 
         public override void DrawContent(SKCanvas canvas, int width, int height)
         {
-            if (Entries != null)
+            if (Inputs != null)
             {
                 DrawCaption(canvas, width, height);
                 using (new SKAutoCanvasRestore(canvas))
                 {
                     canvas.Translate(width / 2, height / 2);
-                    var sumValue = Entries.Sum(x => Math.Abs(x.Value));
+                    var sumValue = Inputs.Sum(x => Math.Abs(x.Value));
                     var radius = (Math.Min(width, height) - (2 * Margin)) / 2;
 
                     var start = 0.0f;
-                    for (int i = 0; i < Entries.Count(); i++)
+                    for (int i = 0; i < Inputs.Count(); i++)
                     {
-                        var entry = Entries.ElementAt(i);
-                        var end = start + ((Math.Abs(entry.Value) / sumValue) * AnimationProgress);
+                        var input = Inputs.ElementAt(i);
+                        var end = start + ((Math.Abs(input.Value) / sumValue) * AnimationProgress);
 
                         // Sector
                         var path = RadialHelpers.CreateSectorPath(start, end, radius, radius * HoleRadius);
                         using (var paint = new SKPaint
                         {
                             Style = SKPaintStyle.Fill,
-                            Color = entry.Color,
+                            Color = input.Color,
                             IsAntialias = true,
                         })
                         {
@@ -47,24 +47,24 @@ namespace Xamarin.Cross.Charts.Charts
 
         private void DrawCaption(SKCanvas canvas, int width, int height)
         {
-            var sumValue = Entries.Sum(x => Math.Abs(x.Value));
-            var rightValues = new List<ChartEntry>();
-            var leftValues = new List<ChartEntry>();
+            var sumValue = Inputs.Sum(x => Math.Abs(x.Value));
+            var rightValues = new List<ChartInput>();
+            var leftValues = new List<ChartInput>();
 
             int i = 0;
             var current = 0.0f;
-            while (i < Entries.Count() && (current < sumValue / 2))
+            while (i < Inputs.Count() && (current < sumValue / 2))
             {
-                var entry = Entries.ElementAt(i);
-                rightValues.Add(entry);
-                current += Math.Abs(entry.Value);
+                var input = Inputs.ElementAt(i);
+                rightValues.Add(input);
+                current += Math.Abs(input.Value);
                 i++;
             }
 
-            while (i < Entries.Count())
+            while (i < Inputs.Count())
             {
-                var entry = Entries.ElementAt(i);
-                leftValues.Add(entry);
+                var input = Inputs.ElementAt(i);
+                leftValues.Add(input);
                 i++;
             }
 

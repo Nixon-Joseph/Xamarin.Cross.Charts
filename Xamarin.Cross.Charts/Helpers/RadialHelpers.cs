@@ -9,7 +9,7 @@ namespace Xamarin.Cross.Charts.Helpers
         private const float UprightAngle = PI / 2f;
         private const float TotalAngle = 2f * PI;
 
-        public static SKPoint GetCirclePoint(float r, float angle)
+        public static SKPoint GetPointOnCircle(float r, float angle)
         {
             return new SKPoint(r * (float)Math.Cos(angle), r * (float)Math.Sin(angle));
         }
@@ -43,10 +43,10 @@ namespace Xamarin.Cross.Charts.Helpers
             var offsetr = innerRadius == 0 ? 0 : ((margin / (TotalAngle * innerRadius)) * TotalAngle);
 
             // get the points
-            var a = GetCirclePoint(outerRadius, startAngle + offsetR);
-            var b = GetCirclePoint(outerRadius, endAngle - offsetR);
-            var c = GetCirclePoint(innerRadius, endAngle - offsetr);
-            var d = GetCirclePoint(innerRadius, startAngle + offsetr);
+            var a = GetPointOnCircle(outerRadius, startAngle + offsetR);
+            var b = GetPointOnCircle(outerRadius, endAngle - offsetR);
+            var c = GetPointOnCircle(innerRadius, endAngle - offsetr);
+            var d = GetPointOnCircle(innerRadius, startAngle + offsetr);
 
             // add the points to the path
             path.MoveTo(a);

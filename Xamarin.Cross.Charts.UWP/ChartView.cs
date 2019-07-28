@@ -13,9 +13,9 @@ namespace Xamarin.Cross.Charts.UWP
 
         public static readonly DependencyProperty ChartProperty = DependencyProperty.Register(nameof(Chart), typeof(ChartView), typeof(Chart), new PropertyMetadata(null, new PropertyChangedCallback(OnChartChanged)));
 
-        private InvalidatedWeakEventHandler<ChartView> handler;
+        private WeakEventHandler<ChartView> _Handler;
 
-        private Chart chart;
+        private Chart _Chart;
 
         public Chart Chart
         {
@@ -25,28 +25,29 @@ namespace Xamarin.Cross.Charts.UWP
 
         private static void OnChartChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var view = d as ChartView;
-
-            if (view.chart != null)
+            if (d is ChartView _this && e.NewValue is Chart newChart)
             {
-                view.handler.Dispose();
-                view.handler = null;
-            }
+                if (_this._Chart != null)
+                {
+                    _this._Handler.Dispose();
+                    _this._Handler = null;
+                }
 
-            view.chart = e.NewValue as Chart;
-            view.Invalidate();
+                _this._Chart = newChart;
+                _this.Invalidate();
 
-            if (view.chart != null)
-            {
-                view.handler = view.chart.ObserveInvalidate(view, (v) => v.Invalidate());
+                if (_this._Chart != null)
+                {
+                    _this._Handler = _this._Chart.ObserveInvalidate(_this, (v) => v.Invalidate());
+                }
             }
         }
 
         private void OnPaintCanvas(object sender, SKPaintSurfaceEventArgs e)
         {
-            if (chart != null)
+            if (_Chart != null)
             {
-                chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
+                _Chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
             }
             else
             {

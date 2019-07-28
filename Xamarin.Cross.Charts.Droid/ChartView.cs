@@ -8,49 +8,34 @@ namespace Xamarin.Cross.Charts.Droid
 {
     public class ChartView : SKCanvasView
     {
-        public ChartView(Context context) : base(context)
-        {
-            PaintSurface += OnPaintCanvas;
-        }
+        public ChartView(Context context) : base(context) { Init(); }
+        public ChartView(Context context, IAttributeSet attributes) : base(context, attributes) { Init(); }
+        public ChartView(Context context, IAttributeSet attributes, int defStyleAtt) : base(context, attributes, defStyleAtt) { Init(); }
+        public ChartView(IntPtr ptr, JniHandleOwnership jni) : base(ptr, jni) { Init(); }
+        private void Init() { PaintSurface += OnPaintCanvas; }
 
-        public ChartView(Context context, IAttributeSet attributes) : base(context, attributes)
-        {
-            PaintSurface += OnPaintCanvas;
-        }
-
-        public ChartView(Context context, IAttributeSet attributes, int defStyleAtt) : base(context, attributes, defStyleAtt)
-        {
-            PaintSurface += OnPaintCanvas;
-        }
-
-        public ChartView(IntPtr ptr, JniHandleOwnership jni) : base(ptr, jni)
-        {
-            PaintSurface += OnPaintCanvas;
-        }
-
-        private InvalidatedWeakEventHandler<ChartView> handler;
-
-        private Chart chart;
+        private WeakEventHandler<ChartView> _Handler;
+        private Chart _Chart;
 
         public Chart Chart
         {
-            get => chart;
+            get => _Chart;
             set
             {
-                if (chart != value)
+                if (_Chart != value)
                 {
-                    if (chart != null)
+                    if (_Chart != null)
                     {
-                        handler.Dispose();
-                        handler = null;
+                        _Handler.Dispose();
+                        _Handler = null;
                     }
 
-                    chart = value;
+                    _Chart = value;
                     Invalidate();
 
-                    if (chart != null)
+                    if (_Chart != null)
                     {
-                        handler = chart.ObserveInvalidate(this, (view) => view.Invalidate());
+                        _Handler = _Chart.ObserveInvalidate(this, (view) => view.Invalidate());
                     }
                 }
             }
@@ -58,9 +43,9 @@ namespace Xamarin.Cross.Charts.Droid
 
         private void OnPaintCanvas(object sender, SKPaintSurfaceEventArgs e)
         {
-            if (chart != null)
+            if (_Chart != null)
             {
-                chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
+                _Chart.Draw(e.Surface.Canvas, e.Info.Width, e.Info.Height);
             }
         }
     }

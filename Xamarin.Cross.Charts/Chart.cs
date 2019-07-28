@@ -8,22 +8,23 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Cross.Charts.Extensions;
+using Xamarin.Cross.Charts.Helpers;
 using Xamarin.Cross.Charts.Utilities;
 
 namespace Xamarin.Cross.Charts
 {
     public abstract class Chart : INotifyPropertyChanged
     {
-        private IEnumerable<ChartEntry> entries;
-        private float animationProgress, margin = 20, labelTextSize = 16;
-        private SKColor backgroundColor = SKColors.White;
-        private SKColor labelColor = SKColors.Gray;
-        private SKTypeface typeface;
-        private float? internalMinValue, internalMaxValue;
-        private bool isAnimated = true, isAnimating = false;
-        private TimeSpan animationDuration = TimeSpan.FromSeconds(1.5f);
-        private Task invalidationPlanification;
-        private CancellationTokenSource animationCancellation;
+        private IEnumerable<ChartInput> _Inputs;
+        private float _AnimationProgress, _Margin = 20, _LabelTextSize = 16;
+        private SKColor _BackgroundColor = SKColors.White;
+        private SKColor _LabelColor = SKColors.Gray;
+        private SKTypeface _Typeface;
+        private float? _InternalMinValue, _InternalMaxValue;
+        private bool _IsAnimated = true, _IsAnimating = false;
+        private TimeSpan _AnimationDuration = TimeSpan.FromSeconds(1.5f);
+        private Task _InvalidationPlanification;
+        private CancellationTokenSource _AnimationCancellation;
 
         public Chart() { PropertyChanged += OnPropertyChanged; }
 
@@ -31,10 +32,10 @@ namespace Xamarin.Cross.Charts
         public event EventHandler Invalidated;
         public bool IsAnimated
         {
-            get => isAnimated;
+            get => _IsAnimated;
             set
             {
-                if (Set(ref isAnimated, value))
+                if (SetValue(ref _IsAnimated, value))
                 {
                     if (!value)
                     {
@@ -45,68 +46,68 @@ namespace Xamarin.Cross.Charts
         }
         public bool IsAnimating
         {
-            get => isAnimating;
-            private set => Set(ref isAnimating, value);
+            get => _IsAnimating;
+            private set => SetValue(ref _IsAnimating, value);
         }
         public TimeSpan AnimationDuration
         {
-            get => animationDuration;
-            set => Set(ref animationDuration, value);
+            get => _AnimationDuration;
+            set => SetValue(ref _AnimationDuration, value);
         }
         public float Margin
         {
-            get => margin;
-            set => Set(ref margin, value);
+            get => _Margin;
+            set => SetValue(ref _Margin, value);
         }
         public float AnimationProgress
         {
-            get => animationProgress;
+            get => _AnimationProgress;
             set
             {
                 value = Math.Min(1, Math.Max(value, 0));
-                Set(ref animationProgress, value);
+                SetValue(ref _AnimationProgress, value);
             }
         }
         public float LabelTextSize
         {
-            get => labelTextSize;
-            set => Set(ref labelTextSize, value);
+            get => _LabelTextSize;
+            set => SetValue(ref _LabelTextSize, value);
         }
         public SKTypeface Typeface
         {
-            get => typeface;
-            set => Set(ref typeface, value);
+            get => _Typeface;
+            set => SetValue(ref _Typeface, value);
         }
         public SKColor BackgroundColor
         {
-            get => backgroundColor;
-            set => Set(ref backgroundColor, value);
+            get => _BackgroundColor;
+            set => SetValue(ref _BackgroundColor, value);
         }
         public SKColor LabelColor
         {
-            get => labelColor;
-            set => Set(ref labelColor, value);
+            get => _LabelColor;
+            set => SetValue(ref _LabelColor, value);
         }
-        public IEnumerable<ChartEntry> Entries
+        public IEnumerable<ChartInput> Inputs
         {
-            get => entries;
-            set => UpdateEntries(value);
+            get => _Inputs;
+            set => UpdateInputs(value);
         }
         public float MinValue
         {
             get
             {
-                if (!Entries.Any())
+                if (!Inputs.Any())
                 {
                     return 0;
                 }
 
                 if (InternalMinValue == null)
                 {
-                    return Math.Min(0, Entries.Min(x => x.Value));
+                    return Math.Min(0, Inputs.Min(x => x.Value));
                 }
 
-                return Math.Min(InternalMinValue.Value, Entries.Min(x => x.Value));
+                return Math.Min(InternalMinValue.Value, Inputs.Min(x => x.Value));
             }
 
             set => InternalMinValue = value;
@@ -115,27 +116,27 @@ namespace Xamarin.Cross.Charts
         {
             get
             {
-                if (!Entries.Any())
+                if (!Inputs.Any())
                 {
                     return 0;
                 }
 
                 if (InternalMaxValue == null)
                 {
-                    return Math.Max(0, Entries.Max(x => x.Value));
+                    return Math.Max(0, Inputs.Max(x => x.Value));
                 }
 
-                return Math.Max(InternalMaxValue.Value, Entries.Max(x => x.Value));
+                return Math.Max(InternalMaxValue.Value, Inputs.Max(x => x.Value));
             }
 
             set => InternalMaxValue = value;
         }
         protected float? InternalMinValue
         {
-            get => internalMinValue;
+            get => _InternalMinValue;
             set
             {
-                if (Set(ref internalMinValue, value))
+                if (SetValue(ref _InternalMinValue, value))
                 {
                     RaisePropertyChanged(nameof(MinValue));
                 }
@@ -143,10 +144,10 @@ namespace Xamarin.Cross.Charts
         }
         protected float? InternalMaxValue
         {
-            get => internalMaxValue;
+            get => _InternalMaxValue;
             set
             {
-                if (Set(ref internalMaxValue, value))
+                if (SetValue(ref _InternalMaxValue, value))
                 {
                     RaisePropertyChanged(nameof(MaxValue));
                 }
@@ -159,33 +160,30 @@ namespace Xamarin.Cross.Charts
             DrawContent(canvas, width, height);
         }
         public abstract void DrawContent(SKCanvas canvas, int width, int height);
-        protected void DrawCaptionElements(SKCanvas canvas, int width, int height, List<ChartEntry> entries, bool isLeft)
+        protected void DrawCaptionElements(SKCanvas canvas, int width, int height, List<ChartInput> inputs, bool isLeft)
         {
             var totalMargin = 2 * Margin;
             var availableHeight = height - (2 * totalMargin);
-            var x = isLeft ? Margin : (width - Margin - LabelTextSize);
-            var ySpace = (availableHeight - LabelTextSize) / ((entries.Count <= 1) ? 1 : entries.Count - 1);
+            var ySpace = (availableHeight - LabelTextSize) / ((inputs.Count <= 1) ? 1 : inputs.Count - 1);
 
-            for (int i = 0; i < entries.Count; i++)
+            for (int i = 0; i < inputs.Count; i++)
             {
-                var entry = entries.ElementAt(i);
+                var input = inputs.ElementAt(i);
                 var y = totalMargin + (i * ySpace);
-                if (entries.Count <= 1)
+                if (inputs.Count <= 1)
                 {
                     y += (availableHeight - LabelTextSize) / 2;
                 }
 
-                var hasLabel = !string.IsNullOrEmpty(entry.Label);
-                var hasValueLabel = !string.IsNullOrEmpty(entry.ValueLabel);
+                var hasLabel = !string.IsNullOrEmpty(input.Label);
+                var hasValueLabel = !string.IsNullOrEmpty(input.DisplayValue);
 
                 if (hasLabel || hasValueLabel)
                 {
-                    var hasOffset = hasLabel && hasValueLabel;
                     var captionMargin = LabelTextSize * 0.60f;
-                    var space = hasOffset ? captionMargin : 0;
                     var captionX = isLeft ? Margin : width - Margin - LabelTextSize;
-                    var valueColor = entry.Color.WithAlpha((byte)(entry.Color.Alpha * AnimationProgress));
-                    var labelColor = entry.TextColor.WithAlpha((byte)(entry.TextColor.Alpha * AnimationProgress));
+                    var valueColor = input.Color.WithAlpha((byte)(input.Color.Alpha * AnimationProgress));
+                    var labelColor = input.TextColor.WithAlpha((byte)(input.TextColor.Alpha * AnimationProgress));
 
                     using (var paint = new SKPaint
                     {
@@ -206,7 +204,7 @@ namespace Xamarin.Cross.Charts
                         captionX -= captionMargin;
                     }
 
-                    canvas.DrawCaptionLabels(entry.Label, labelColor, entry.ValueLabel, valueColor, LabelTextSize, new SKPoint(captionX, y + (LabelTextSize / 2)), isLeft ? SKTextAlign.Left : SKTextAlign.Right, Typeface);
+                    canvas.DrawCaptionLabels(input.Label, labelColor, input.DisplayValue, valueColor, LabelTextSize, new SKPoint(captionX, y + (LabelTextSize / 2)), isLeft ? SKTextAlign.Left : SKTextAlign.Right, Typeface);
                 }
             }
         }
@@ -230,27 +228,27 @@ namespace Xamarin.Cross.Charts
         protected void Invalidate() => Invalidated?.Invoke(this, EventArgs.Empty);
         protected async void PlanifyInvalidate()
         {
-            if (invalidationPlanification != null)
+            if (_InvalidationPlanification != null)
             {
-                await invalidationPlanification;
+                await _InvalidationPlanification;
             }
             else
             {
-                invalidationPlanification = Task.Delay(200);
-                await invalidationPlanification;
+                _InvalidationPlanification = Task.Delay(200);
+                await _InvalidationPlanification;
                 Invalidate();
-                invalidationPlanification = null;
+                _InvalidationPlanification = null;
             }
         }
 
-        public InvalidatedWeakEventHandler<TTarget> ObserveInvalidate<TTarget>(TTarget target, Action<TTarget> onInvalidate) where TTarget : class
+        public WeakEventHandler<TTarget> ObserveInvalidate<TTarget>(TTarget target, Action<TTarget> onInvalidate) where TTarget : class
         {
-            var weakHandler = new InvalidatedWeakEventHandler<TTarget>(this, target, onInvalidate);
-            weakHandler.Subsribe();
+            var weakHandler = new WeakEventHandler<TTarget>(this, target, onInvalidate);
+            weakHandler.Subscribe();
             return weakHandler;
         }
 
-        public async Task AnimateAsync(bool entrance, CancellationToken token = default(CancellationToken))
+        public async Task AnimateAsync(bool entrance, CancellationToken token = default)
         {
             var watch = new Stopwatch();
 
@@ -264,7 +262,7 @@ namespace Xamarin.Cross.Charts
             watch.Start();
 
             var source = new TaskCompletionSource<bool>();
-            var timer = TimerUtil.Create();
+            var timer = new IntervalTimer();
 
             timer.Start(TimeSpan.FromSeconds(1.0 / 30), () =>
             {
@@ -274,8 +272,8 @@ namespace Xamarin.Cross.Charts
                     return false;
                 }
 
-                var progress = (float)(watch.Elapsed.TotalSeconds / animationDuration.TotalSeconds);
-                progress = entrance ? Ease.In(progress) : Ease.Out(progress);
+                var progress = (float)(watch.Elapsed.TotalSeconds / _AnimationDuration.TotalSeconds);
+                progress = entrance ? EaseHelper.EaseIn(progress) : EaseHelper.EaseOut(progress);
                 AnimationProgress = start + (progress * (end - start));
 
                 var shouldContinue = (entrance && AnimationProgress < 1) || (!entrance && AnimationProgress > 0);
@@ -294,19 +292,19 @@ namespace Xamarin.Cross.Charts
             IsAnimating = false;
         }
 
-        private async void UpdateEntries(IEnumerable<ChartEntry> value)
+        private async void UpdateInputs(IEnumerable<ChartInput> value)
         {
             try
             {
-                if (animationCancellation != null)
+                if (_AnimationCancellation != null)
                 {
-                    animationCancellation.Cancel();
+                    _AnimationCancellation.Cancel();
                 }
 
                 var cancellation = new CancellationTokenSource();
-                animationCancellation = cancellation;
+                _AnimationCancellation = cancellation;
 
-                if (!cancellation.Token.IsCancellationRequested && entries != null && IsAnimated)
+                if (!cancellation.Token.IsCancellationRequested && _Inputs != null && IsAnimated)
                 {
                     await AnimateAsync(false, cancellation.Token);
                 }
@@ -315,13 +313,13 @@ namespace Xamarin.Cross.Charts
                     AnimationProgress = 0;
                 }
 
-                if (Set(ref entries, value))
+                if (SetValue(ref _Inputs, value))
                 {
                     RaisePropertyChanged(nameof(MinValue));
                     RaisePropertyChanged(nameof(MaxValue));
                 }
 
-                if (!cancellation.Token.IsCancellationRequested && entries != null && IsAnimated)
+                if (!cancellation.Token.IsCancellationRequested && _Inputs != null && IsAnimated)
                 {
                     await AnimateAsync(true, cancellation.Token);
                 }
@@ -332,7 +330,7 @@ namespace Xamarin.Cross.Charts
             }
             catch
             {
-                if (Set(ref entries, value))
+                if (SetValue(ref _Inputs, value))
                 {
                     RaisePropertyChanged(nameof(MinValue));
                     RaisePropertyChanged(nameof(MaxValue));
@@ -342,7 +340,7 @@ namespace Xamarin.Cross.Charts
             }
             finally
             {
-                animationCancellation = null;
+                _AnimationCancellation = null;
             }
         }
 
@@ -351,9 +349,9 @@ namespace Xamarin.Cross.Charts
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-        protected bool Set<T>(ref T field, T value, [CallerMemberName]string property = null)
+        protected bool SetValue<T>(ref T field, T value, [CallerMemberName]string property = null)
         {
-            if (!EqualityComparer<T>.Equals(field, property))
+            if (!Equals(field, property))
             {
                 field = value;
                 RaisePropertyChanged(property);

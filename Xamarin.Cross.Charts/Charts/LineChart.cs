@@ -15,13 +15,13 @@ namespace Xamarin.Cross.Charts.Charts
         public bool EnableYFadeOutGradient { get; set; } = false;
         public override void DrawContent(SKCanvas canvas, int width, int height)
         {
-            if (Entries != null)
+            if (Inputs != null)
             {
-                var labels = Entries.Select(x => x.Label).ToArray();
+                var labels = Inputs.Select(x => x.Label).ToArray();
                 var labelSizes = MeasureLabels(labels);
                 var footerHeight = CalculateFooterHeaderHeight(labelSizes, LabelOrientation, labels);
 
-                var valueLabels = Entries.Select(x => x.ValueLabel).ToArray();
+                var valueLabels = Inputs.Select(x => x.DisplayValue).ToArray();
                 var valueLabelSizes = MeasureLabels(valueLabels);
                 var headerHeight = CalculateFooterHeaderHeight(valueLabelSizes, ValueLabelOrientation, valueLabels);
 
@@ -62,10 +62,10 @@ namespace Xamarin.Cross.Charts.Charts
                         {
                             if (LineMode == LineMode.Spline)
                             {
-                                var entry = Entries.ElementAt(i);
-                                var nextEntry = Entries.ElementAt(i + 1);
-                                var cubicInfo = CalculateCubicInfo(points, i, itemSize);
-                                path.CubicTo(cubicInfo.control, cubicInfo.nextControl, cubicInfo.nextPoint);
+                                var input = Inputs.ElementAt(i);
+                                var nextInput = Inputs.ElementAt(i + 1);
+                                var (point, control, nextPoint, nextControl) = CalculateCubicInfo(points, i, itemSize);
+                                path.CubicTo(control, nextControl, nextPoint);
                             }
                             else if (LineMode == LineMode.Straight)
                             {
@@ -105,10 +105,10 @@ namespace Xamarin.Cross.Charts.Charts
                         {
                             if (LineMode == LineMode.Spline)
                             {
-                                var entry = Entries.ElementAt(i);
-                                var nextEntry = Entries.ElementAt(i + 1);
-                                var cubicInfo = CalculateCubicInfo(points, i, itemSize);
-                                path.CubicTo(cubicInfo.control, cubicInfo.nextControl, cubicInfo.nextPoint);
+                                var input = Inputs.ElementAt(i);
+                                var nextInput = Inputs.ElementAt(i + 1);
+                                var (point, control, nextPoint, nextControl) = CalculateCubicInfo(points, i, itemSize);
+                                path.CubicTo(control, nextControl, nextPoint);
                             }
                             else if (LineMode == LineMode.Straight)
                             {
@@ -145,7 +145,7 @@ namespace Xamarin.Cross.Charts.Charts
             return SKShader.CreateLinearGradient(
                 new SKPoint(startX, 0),
                 new SKPoint(endX, 0),
-                Entries.Select(x => x.Color.WithAlpha(alpha)).ToArray(),
+                Inputs.Select(x => x.Color.WithAlpha(alpha)).ToArray(),
                 null,
                 SKShaderTileMode.Clamp);
         }
