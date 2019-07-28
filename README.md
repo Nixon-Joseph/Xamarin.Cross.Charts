@@ -1,6 +1,6 @@
 # Xamarin.Cross.Charts
 
-Create and display simple charts in Xamarin.Android, Xamarin.iOS, Xamarin.UWP, and Xamarin.Forms projects.
+Create and display simple charts in Xamarin.Android, Xamarin.iOS, (TODO: Xamarin.UWP), and Xamarin.Forms projects.
 
 ## TODO: Getting Started
 
