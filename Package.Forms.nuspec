@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Xamarin.Cross.Charts.Forms</id>
-    <version>$version$</version>
+    <version>0.1.1-pre</version>
     <title>Charts for Xamarin.Forms</title>
     <authors>Joseph Nixon</authors>
     <owners>Joseph Nixon</owners>
@@ -21,6 +21,6 @@
   </metadata>
   <files>
     <!-- Standard 2.0 -->
-    <file src="..\Xamarin.Cross.Charts.Forms\bin\Release\netstandard2.0\Xamarin.Cross.Charts.Forms.dll" target="lib\netstandard2.0\Xamarin.Cross.Charts.Forms.dll"/>
+    <file src=".\Xamarin.Cross.Charts.Forms\bin\Release\netstandard2.0\Xamarin.Cross.Charts.Forms.dll" target="lib\netstandard2.0\Xamarin.Cross.Charts.Forms.dll"/>
   </files>
 </package>
