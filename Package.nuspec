@@ -1,0 +1,50 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Xamarin.Cross.Charts</id>
+    <version>$version$</version>
+    <title>Xamarin.Cross.Charts</title>
+    <authors>Joseph Nixon</authors>
+    <owners>Joseph Nixon</owners>
+    <licenseUrl>https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Create cross-platforms (Xamarin, Windows, ...) charts.</description>
+    <copyright>Copyright 2019</copyright>
+    <tags>xamarin ios android chart skia</tags>
+    <dependencies>
+      <group>
+        <dependency id="SkiaSharp" version="1.68.0" />
+      </group>
+      <group targetFramework="MonoAndroid10">
+        <dependency id="SkiaSharp.Views"  version="1.68.0" />
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+        <dependency id="SkiaSharp.Views"  version="1.68.0" />
+      </group>
+      <group targetFramework="uap">
+        <dependency id="SkiaSharp.Views"  version="1.68.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <!-- Standard -->
+    <file src="..\Xamarin.Cross.Charts\bin\Release\netstandard1.4\Xamarin.Cross.Charts.dll" target="lib\netstandard1.4\Xamarin.Cross.Charts.dll"/>
+
+    <!-- Android -->
+    <file src="..\Xamarin.Cross.Charts.Droid\bin\Release\Xamarin.Cross.Charts.dll" target="lib\MonoAndroid10\Xamarin.Cross.Charts.dll"/>
+    <file src="..\Xamarin.Cross.Charts.Droid\bin\Release\Xamarin.Cross.Charts.Droid.dll" target="lib\MonoAndroid10\Xamarin.Cross.Charts.Droid.dll"/>
+
+    <!-- iOS -->
+    <file src="..\Xamarin.Cross.Charts.iOS\bin\Release\Xamarin.Cross.Charts.dll" target="lib\Xamarin.iOS10\Xamarin.Cross.Charts.dll"/>
+    <file src="..\Xamarin.Cross.Charts.iOS\bin\Release\Xamarin.Cross.Charts.iOS.dll" target="lib\Xamarin.iOS10\Xamarin.Cross.Charts.iOS.dll"/>
+
+    <!-- UWP -->
+    <file src="..\Xamarin.Cross.Charts.Uwp\bin\Release\Xamarin.Cross.Charts.dll" target="lib\uap\Xamarin.Cross.Charts.dll"/>
+    <file src="..\Xamarin.Cross.Charts.Uwp\bin\Release\Xamarin.Cross.Charts.Uwp.dll" target="lib\uap\Xamarin.Cross.Charts.Uwp.dll"/>
+
+    <!-- macOS -->
+    <file src="..\Xamarin.Cross.Charts.macOS\bin\Release\Xamarin.Cross.Charts.dll" target="lib\xamarinmac\Xamarin.Cross.Charts.dll"/>
+    <file src="..\Xamarin.Cross.Charts.macOS\bin\Release\Xamarin.Cross.Charts.macOS.dll" target="lib\xamarinmac\Xamarin.Cross.Charts.macOS.dll"/>
+  </files>
+</package>

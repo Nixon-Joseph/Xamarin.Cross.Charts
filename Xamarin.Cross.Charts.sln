@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Cross.Charts.UWP", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Cross.Charts.iOS", "Xamarin.Cross.Charts.iOS\Xamarin.Cross.Charts.iOS.csproj", "{F7A9F259-7D5E-46F1-84D6-9D8F7B2B81F1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{23D76BA0-AB51-4634-97FC-EFD201F877F9}"
+	ProjectSection(SolutionItems) = preProject
+		Package.Forms.nuspec = Package.Forms.nuspec
+		Package.nuspec = Package.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Xamarin.Cross.Charts.Forms</id>
+    <version>$version$</version>
+    <title>Charts for Xamarin.Forms</title>
+    <authors>Joseph Nixon</authors>
+    <owners>Joseph Nixon</owners>
+    <licenseUrl>https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Create cross-platforms (Xamarin, Windows, ...) charts.</description>
+    <copyright>Copyright 2019</copyright>
+    <tags>xamarin forms ios android chart skia</tags>
+    <dependencies>
+      <group>
+        <dependency id="Xamarin.Forms" version="3.3.0.912540" />
+        <dependency id="SkiaSharp.Views.Forms" version="1.68.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <!-- Standard 2.0 -->
+    <file src="..\Xamarin.Cross.Charts.Forms\bin\Release\netstandard2.0\Xamarin.Cross.Charts.Forms.dll" target="lib\netstandard2.0\Xamarin.Cross.Charts.Forms.dll"/>
+  </files>
+</package>
