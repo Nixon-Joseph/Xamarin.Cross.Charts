@@ -40,7 +40,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 * **Joseph Nixon** - *Initial work* - [Microcharts](https://github.com/dotnet-ad/Microcharts/)
 
-TODO: See also the list of [contributors](https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/contributors) who participated in this project.
 
 ## License
 
