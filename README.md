@@ -42,9 +42,9 @@ End with an example of getting some data out of the system or using it for a lit
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## TODO: Versioning
+## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/Nixon-Joseph/Xamarin.Cross.Charts/tags). 
 
 ## TODO: Authors
 
