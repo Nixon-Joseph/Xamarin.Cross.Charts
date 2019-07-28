@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Cross.Charts.Enums;
 using Xamarin.Cross.Charts.Extensions;
 
 namespace Xamarin.Cross.Charts.Charts
