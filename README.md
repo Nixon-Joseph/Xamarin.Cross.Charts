@@ -58,6 +58,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## TODO: Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* This project is 'forked' directly off of [Microcharts](https://github.com/dotnet-ad/Microcharts/).
+
+## Huge shoutout to [Microcharts](https://github.com/dotnet-ad/Microcharts/)
+
+I was a contributor on [Microcharts](https://github.com/dotnet-ad/Microcharts/) since stumpling upon it after the original author had moved on to other things, but it was a little too much to deal with limited permissions in the project and it was in the middle of a Gitflow release/development. Also I wanted to make wholesale changes to syntax, coding structure, variable naming, etc, without screwing with the original author's vision of the project. This project started out as a direct pull off of the develop branch, so it has all the latest things.
+
+I attempted to contribute directly to his project, but stepping into a project with many unresolved 'issues' from more than a year ago, it was hard to catch up, not to mention, if the project is my own, I feel like I have more responsibility to keep it alive, and functional. [Microcharts](https://github.com/dotnet-ad/Microcharts/) also was originally created to provide simple charts, with purposfully limited functionality. Alois didn't intend people to be displaying complex data (40+ datapoints) in the charts, which is fine, but I indend to make it more flexable for all scenarios. Alois also didn't intend on making it interactable, but one of the first features I plan to implement is a touch gesture on the chart elements/labels, as that is one of the most widely requeested features in his repo.
