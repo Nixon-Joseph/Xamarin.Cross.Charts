@@ -11,11 +11,11 @@ These instructions will get you a copy of the project up and running on your loc
 If you are using the `.Forms` variant, you will need at least `Xamarin.Forms v3.3.0.912540`
 Both the `.Forms` and the native variants depend on `SkiaSharp v1.68.0`
 
-### TODO: Installing
+### Installing
 
 Available on NuGet
 
-**NET Standard 2.0, Xamarin.iOS, Xamarin.Android, UWP**
+**NET Standard 2.0, Xamarin.iOS, Xamarin.Android, (TODO: UWP)**
 
 [![NuGet](https://img.shields.io/nuget/v/Xamarin.Cross.Charts.svg?label=NuGet)](https://www.nuget.org/packages/Xamarin.Cross.Charts/)
 
