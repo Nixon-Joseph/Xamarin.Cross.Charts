@@ -8,11 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### TODO: Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+If you are using the `.Forms` variant, you will need at least `Xamarin.Forms v3.3.0.912540`
+Both the `.Forms` and the native variants depend on `SkiaSharp v1.68.0`
 
 ### TODO: Installing
 
@@ -32,11 +29,10 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## TODO: Built With
+## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Xamarin](https://docs.microsoft.com/en-us/xamarin/) - The mobile framework
+* [SkiaSharp](https://github.com/mono/SkiaSharp) - Dependancy
 
 ## Contributing
 
