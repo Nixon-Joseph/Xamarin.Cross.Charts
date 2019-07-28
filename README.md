@@ -13,21 +13,15 @@ Both the `.Forms` and the native variants depend on `SkiaSharp v1.68.0`
 
 ### TODO: Installing
 
-A step by step series of examples that tell you how to get a development env running
+Available on NuGet
 
-Say what the step will be
+**NET Standard 2.0, Xamarin.iOS, Xamarin.Android, UWP**
 
-```
-Give the example
-```
+[![NuGet](https://img.shields.io/nuget/v/Xamarin.Cross.Charts.svg?label=NuGet)](https://www.nuget.org/packages/Xamarin.Cross.Charts/)
 
-And repeat
+**Xamarin.Forms (.NET Standard 2.0)**
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+[![NuGet](https://img.shields.io/nuget/v/Xamarin.Cross.Charts.Forms.svg?label=NuGet)](https://www.nuget.org/packages/Xamarin.Cross.Charts.Forms/)
 
 ## Built With
 
