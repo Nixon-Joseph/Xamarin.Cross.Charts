@@ -1,5 +1,6 @@
 ﻿using SkiaSharp;
 using SkiaSharp.Views.Forms;
+using Xamarin.Cross.Charts.Utilities;
 using Xamarin.Forms;
 
 namespace Xamarin.Cross.Charts.Forms

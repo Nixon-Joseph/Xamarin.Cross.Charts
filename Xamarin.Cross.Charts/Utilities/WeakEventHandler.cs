@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xamarin.Cross.Charts
+namespace Xamarin.Cross.Charts.Utilities
 {
     public class WeakEventHandler<TTarget> : IDisposable where TTarget : class
     {

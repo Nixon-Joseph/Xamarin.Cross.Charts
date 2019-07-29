@@ -3,6 +3,7 @@ using Android.Runtime;
 using Android.Util;
 using SkiaSharp.Views.Android;
 using System;
+using Xamarin.Cross.Charts.Utilities;
 
 namespace Xamarin.Cross.Charts.Droid
 {

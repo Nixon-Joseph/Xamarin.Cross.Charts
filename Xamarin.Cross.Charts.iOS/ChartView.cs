@@ -3,6 +3,7 @@ using SkiaSharp;
 using SkiaSharp.Views.iOS;
 using System;
 using UIKit;
+using Xamarin.Cross.Charts.Utilities;
 
 namespace Xamarin.Cross.Charts.iOS
 {
